@@ -1,51 +1,27 @@
 name: "CodeQL"
-
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
   schedule:
-    - cron: '0 6 * * 1' # Runs every Monday at 6am UTC
-
+    - cron: '0 6 * * 1'
 jobs:
   analyze:
-    name: Analyze
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
     strategy:
-      fail-fast: false
       matrix:
-        language: [ 'javascript', 'go', 'css' ]
-        # Add more languages if needed
-
+        language: [ 'javascript', 'go' ]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        # Use a custom CodeQL query pack (optional)
-        # packs: githubsecuritylab/codeql-queries
-
-    # Build steps (customize per language if necessary)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
-
-    # If autobuild fails or is insufficient, add manual build steps here:
-    # - name: Build with npm
-    #   run: npm install && npm run build
-
-    # Perform CodeQL Analysis
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{ matrix.language }}"
-        # Upload results to a different SARIF category if desired
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
