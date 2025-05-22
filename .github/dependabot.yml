@@ -1,9 +1,33 @@
-version: 2
+version: 3
 updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'monthly'
+      interval: 'weekly'          
+      # Check more frequently; use 'daily' for stricter security
+    open-pull-requests-limit: 5   # Prevent PR overload
     commit-message:
       prefix: 'chore'
       include: 'scope'
+    allow:
+      - dependency-type: 'direct' 
+      # Only update direct dependencies (optional for stricter control)
+    ignore:
+      - dependency-type: 'indirect' 
+      # Ignore indirect deps (optional for stricter control)
+    pull-request-branch-name:
+      separator: '-'               # Consistent branch naming
+    reviewers:
+      - 'Apetree100122'           
+      # Require code review (replace/add reviewers as needed)
+    # Automerge only non-breaking (patch) updates (optional)
+    # automerge: true
+    # automerge-type: 'patch'
+    security-updates: true     
+    # Enable security updates
+  # Add additional entries for other ecosystems like 'github-actions', 'go', etc. if used
+  # - package-ecosystem: 'github-actions'
+  #   directory: '/'
+  #   schedule:
+  #     interval: 'weekly'
+  #   security-updates: true
